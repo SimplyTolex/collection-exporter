@@ -21,17 +21,23 @@ const searchedCollection = "Not enough stamina"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
-const beatmapsHash = foundCollection["beatmapsMd5"] // Gets the list with the beatmap hashes in the searched collection
+const beatmapHashes = foundCollection["beatmapsMd5"] // Gets the list with the beatmap hashes in the searched collection
 // console.log(beatmapsHash)
 
+// We need folder_name property and we can get them from here
+let osuDBbuffer = Buffer.from(fs.readFileSync("C:/Users/rogat/AppData/Local/osu!/osu!.db"));
+const osuDB = new OsuDBParser(osuDBbuffer);
+let osuDBData = osuDB.getOsuDBData();
 
-// let osuDBbuffer = Buffer.from(fs.readFileSync("C:/Users/rogat/AppData/Local/osu!/osu!.db"));
-// const osuDB = new OsuDBParser(osuDBbuffer);
+let foundBeatmapDiffs = [];
 
-// let osuDBData = osuDB.getOsuDBData(); // This is osu!.db data you can make with this all that you want.
-// // let test2 = osuDBData["beatmaps"][0]["md5"]
-// // console.log(test2)
-// const beatmapCount = osuDBData["beatmaps_count"];
+for (let i = 0; i < beatmapHashes.length; i++){
+    let testHash = beatmapHashes[i]; // get i hash
+    foundBeatmapDiffs.push(osuDBData["beatmaps"].find(beatmap => beatmap.md5 === testHash));
+}
+
+// at this point we have actual beatmap diffs instead of random hashes
+// console.log(foundBeatmapDiffs)
 
 // let matches = [];
 

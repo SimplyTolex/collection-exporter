@@ -6,8 +6,8 @@ const osuDB = new OsuDBParser(osuDBbuffer);
 
 let osuDBData = osuDB.getOsuDBData(); // This is osu!.db data you can make with this all that you want.
 // let test2 = osuDBData["beatmaps"][0]["md5"]
-let test2 = osuDBData["beatmaps"][2]
-// let test2 = osuDBData
+// let test2 = osuDBData["beatmaps"][2]
+let test2 = osuDBData["beatmaps"]
 console.log(test2)
 // console.log(osuDBData);
 // let osuTest = JSON.parse(osuDBData);
