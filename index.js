@@ -8,8 +8,8 @@ const collectionDB = new OsuDBParser(null, collectionBuffer);
 let osuCollectionData = collectionDB.getCollectionData()
 
 
-const searchedCollection = "Triangles"
-// const searchedCollection = "Not enough stamina"
+// const searchedCollection = "Triangles"
+const searchedCollection = "Not enough stamina"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
@@ -29,5 +29,11 @@ for (let i = 0; i < beatmapHashes.length; i++){
 }
 
 // at this point we have actual beatmap diffs instead of random hashes
-console.log(foundBeatmapDiffs)
 
+// put every folder_name in a separate list, then remove duplicates
+let folderNamesWithDups = [];
+for (let i = 0; i < foundBeatmapDiffs.length; i++){
+    folderNamesWithDups.push(foundBeatmapDiffs[i]["folder_name"])
+}
+
+const folderNames = [new Set(folderNamesWithDups)];
