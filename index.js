@@ -1,5 +1,11 @@
-const fs = require("fs");
-const { OsuDBParser } = require("osu-db-parser");
+import fs from "fs";
+import path from "path";
+import { OsuDBParser } from "osu-db-parser";
+import JSZip from "jszip";
+// const fs = require("fs");
+// const path = require("path");
+// const { OsuDBParser } = require("osu-db-parser");
+// const JSZip = require("jszip");
 
 const osuFolderPath = "C:/Users/rogat/AppData/Local/osu!";
 
@@ -23,7 +29,7 @@ let osuDBData = osuDB.getOsuDBData();
 
 let foundBeatmapDiffs = [];
 
-for (let i = 0; i < beatmapHashes.length; i++){
+for (let i = 0; i < beatmapHashes.length; i++) {
     let testHash = beatmapHashes[i]; // get i hash
     foundBeatmapDiffs.push(osuDBData["beatmaps"].find(beatmap => beatmap.md5 === testHash));
 }
@@ -32,8 +38,32 @@ for (let i = 0; i < beatmapHashes.length; i++){
 
 // put every folder_name in a separate list, then remove duplicates
 let folderNamesWithDups = [];
-for (let i = 0; i < foundBeatmapDiffs.length; i++){
+for (let i = 0; i < foundBeatmapDiffs.length; i++) {
     folderNamesWithDups.push(foundBeatmapDiffs[i]["folder_name"])
 }
 
-const folderNames = [new Set(folderNamesWithDups)];
+// removes duplicates, then gets what remains into array. I've spent almost 2 hours on this
+let folderNames = [...new Set(folderNamesWithDups)];
+
+// function from https://dev.to/zirkelc/read-all-files-of-directory-and-subdirectories-with-recursive-generators-in-javascript-2pbd
+export function* readAllFiles(dir) {
+    const files = fs.readdirSync(dir, { withFileTypes: true });
+
+    for (const file of files) {
+        if (file.isDirectory()) {
+            yield* readAllFiles(path.join(dir, file.name));
+        } else {
+            yield path.join(dir, file.name);
+        }
+    }
+}
+
+// finds every required file
+for (let i = 0; i < folderNames.length; i++) {
+    for (const file of readAllFiles(osuFolderPath.concat("/Songs/", folderNames[i]))) {
+        console.log(file);
+    }
+}
+
+// zips them, eventually
+let zip = new JSZip();
