@@ -2,10 +2,7 @@ import fs from "fs";
 import path from "path";
 import { OsuDBParser } from "osu-db-parser";
 import JSZip from "jszip";
-// const fs = require("fs");
-// const path = require("path");
-// const { OsuDBParser } = require("osu-db-parser");
-// const JSZip = require("jszip");
+
 
 const osuFolderPath = "C:/Users/rogat/AppData/Local/osu!";
 
@@ -60,10 +57,22 @@ export function* readAllFiles(dir) {
 
 // finds every required file
 for (let i = 0; i < folderNames.length; i++) {
-    for (const file of readAllFiles(osuFolderPath.concat("/Songs/", folderNames[i]))) {
-        console.log(file);
-    }
-}
+    let zip = new JSZip();
 
-// zips them, eventually
-let zip = new JSZip();
+    for (const file of readAllFiles(osuFolderPath.concat("/Songs/", folderNames[i]))) {
+
+        let fileStream = fs.createReadStream(file);
+
+        const fileSplit = file.split("\\");
+        const fileName = fileSplit[fileSplit.length - 1];
+        zip.file(fileName, fileStream);
+    }
+    
+    // create an osz for every folder
+    zip
+        .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+        .pipe(fs.createWriteStream(folderNames[i].concat('.osz')))
+        .on('finish', function () {
+            console.log("zip written.");
+        });
+}
