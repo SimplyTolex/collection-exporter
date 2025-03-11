@@ -11,8 +11,9 @@ const collectionDB = new OsuDBParser(null, collectionBuffer);
 let osuCollectionData = collectionDB.getCollectionData()
 
 
-const searchedCollection = "Triangles"
+// const searchedCollection = "Triangles"
 // const searchedCollection = "Not enough stamina"
+const searchedCollection = "AAA-should add"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
@@ -55,11 +56,21 @@ export function* readAllFiles(dir) {
     }
 }
 
+// manage which folders to process
+
+console.log("Folders found: " + folderNames.length);
+
+// startElement = 0; endElement = folderNames.length + 1
+const startElement = 0;
+const endElement = folderNames.length + 1; // slice doesn't include the last element
+
+const foldersToProcess = folderNames.slice(startElement, endElement);
+
 // finds every required file
-for (let i = 0; i < folderNames.length; i++) {
+for (let i = 0; i < foldersToProcess.length; i++) {
     let zip = new JSZip();
 
-    for (const file of readAllFiles(osuFolderPath + "/Songs/" + folderNames[i])) {
+    for (const file of readAllFiles(osuFolderPath + "/Songs/" + foldersToProcess[i])) {
 
         let fileStream = fs.createReadStream(file);
 
@@ -71,7 +82,7 @@ for (let i = 0; i < folderNames.length; i++) {
     // create an osz for every folder
     zip
         .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-        .pipe(fs.createWriteStream(folderNames[i] + '.osz'))
+        .pipe(fs.createWriteStream(foldersToProcess[i] + '.osz'))
         .on('finish', function () {
             console.log("zip written.");
         });
