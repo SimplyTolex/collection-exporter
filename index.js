@@ -94,6 +94,6 @@ for (let i = 0; i < foldersToProcess.length; i++) {
         .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
         .pipe(fs.createWriteStream(outputDir + "/" + foldersToProcess[i] + '.osz'))
         .on('finish', function () {
-            console.log("exported");
+            console.log(i + " exported [" + foldersToProcess[i] + "]");
         });
 }
