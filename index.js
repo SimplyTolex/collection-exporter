@@ -63,7 +63,7 @@ for (let i = 0; i < folderNames.length; i++) {
 
         let fileStream = fs.createReadStream(file);
 
-        const fileSplit = file.split("\\");
+        const fileSplit = file.split("\\"); // potential bug with path separators on Linux?
         const fileName = fileSplit[fileSplit.length - 1];
         zip.file(fileName, fileStream);
     }
