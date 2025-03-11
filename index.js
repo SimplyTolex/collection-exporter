@@ -11,8 +11,8 @@ const collectionDB = new OsuDBParser(null, collectionBuffer);
 let osuCollectionData = collectionDB.getCollectionData()
 
 
-// const searchedCollection = "Triangles"
-const searchedCollection = "Not enough stamina"
+const searchedCollection = "Triangles"
+// const searchedCollection = "Not enough stamina"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
@@ -59,7 +59,7 @@ export function* readAllFiles(dir) {
 for (let i = 0; i < folderNames.length; i++) {
     let zip = new JSZip();
 
-    for (const file of readAllFiles(osuFolderPath.concat("/Songs/", folderNames[i]))) {
+    for (const file of readAllFiles(osuFolderPath + "/Songs/" + folderNames[i])) {
 
         let fileStream = fs.createReadStream(file);
 
@@ -71,7 +71,7 @@ for (let i = 0; i < folderNames.length; i++) {
     // create an osz for every folder
     zip
         .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-        .pipe(fs.createWriteStream(folderNames[i].concat('.osz')))
+        .pipe(fs.createWriteStream(folderNames[i] + '.osz'))
         .on('finish', function () {
             console.log("zip written.");
         });
