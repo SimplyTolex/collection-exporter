@@ -66,6 +66,13 @@ const endElement = folderNames.length + 1; // slice doesn't include the last ele
 
 const foldersToProcess = folderNames.slice(startElement, endElement);
 
+// make output dir
+const outputDir = "./CEoutput"
+
+if (!fs.existsSync(outputDir)){
+    fs.mkdirSync(outputDir);
+}
+
 // finds every required file
 for (let i = 0; i < foldersToProcess.length; i++) {
     let zip = new JSZip();
@@ -78,12 +85,12 @@ for (let i = 0; i < foldersToProcess.length; i++) {
         const fileName = fileSplit[fileSplit.length - 1];
         zip.file(fileName, fileStream);
     }
-    
+
     // create an osz for every folder
     zip
         .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-        .pipe(fs.createWriteStream(foldersToProcess[i] + '.osz'))
+        .pipe(fs.createWriteStream(outputDir + "/" + foldersToProcess[i] + '.osz'))
         .on('finish', function () {
-            console.log("zip written.");
+            console.log("exported");
         });
 }
