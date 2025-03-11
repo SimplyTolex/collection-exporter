@@ -11,9 +11,11 @@ const collectionDB = new OsuDBParser(null, collectionBuffer);
 let osuCollectionData = collectionDB.getCollectionData()
 
 
+// Todo give better error if collection doesn't exist
 // const searchedCollection = "Triangles"
 // const searchedCollection = "Not enough stamina"
-const searchedCollection = "AAA-should add"
+// const searchedCollection = "AAA-should add"
+const searchedCollection = "Favorite ones"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
@@ -26,10 +28,11 @@ const osuDB = new OsuDBParser(osuDBbuffer);
 let osuDBData = osuDB.getOsuDBData();
 
 let foundBeatmapDiffs = [];
-
 for (let i = 0; i < beatmapHashes.length; i++) {
     let testHash = beatmapHashes[i]; // get i hash
-    foundBeatmapDiffs.push(osuDBData["beatmaps"].find(beatmap => beatmap.md5 === testHash));
+    // if (testHash == null){ continue };
+    const result = osuDBData["beatmaps"].find(beatmap => beatmap.md5 === testHash);
+    if (result != null) { foundBeatmapDiffs.push(result); }
 }
 
 // at this point we have actual beatmap diffs instead of random hashes
