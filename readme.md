@@ -20,7 +20,7 @@ Collection Exporter lets you export specific collections from osu!stable as .osz
 The program works, you can use it if you really wanna, but it doesn't have any interfaces, everything is done by downloading / forking it and changing the code.
 
 ## Future plans / To-Do
-[ ] Make a proper CLI
-[ ] Make it a webapp (because why not)
-[ ] Add Lazer collection support?? (kinda don't wanna deal with parsers)
-[ ] Fix the bug which may or may not exist
+- [ ] Make a proper CLI
+- [ ] Make it a webapp (because why not)
+- [ ] Add Lazer collection support?? (kinda don't wanna deal with parsers)
+- [ ] Fix the bug which may or may not exist
