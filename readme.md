@@ -1,11 +1,13 @@
 # Collection Exporter
 still in need of cooking
 
-Collection Exporter lets you export specific collections from osu!stable as .osz files. You can use them to backup your downloaded beatmaps or import them into osu!lazer
+Collection Exporter lets you export specific collections from osu!stable as .osz files. You can use them to backup your downloaded beatmaps or import them into osu!lazer[^1]
 
-(While you can import maps directly in Lazer, it will import all beatmaps, and that's good, but I have a lot of maps that I don't really wanna move)
+[^1]: While you can import maps directly in Lazer, it will import all beatmaps, and that's good, but not always desirable. I have a lot of maps that I don't really wanna import and I made this app to help with that. 
 
 Shout-out to [osu-db-parser](https://github.com/KotRikD/osu-db-parser), without it this project wouldn't exist (or would take much more time)
+
+Also you should probably just use [Collection Manager](https://github.com/Piotrekol/CollectionManager), it's quite good.
 
 ## Limitations
 
