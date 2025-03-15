@@ -14,8 +14,8 @@ let osuCollectionData = collectionDB.getCollectionData()
 // Todo give better error if collection doesn't exist
 // const searchedCollection = "Triangles"
 // const searchedCollection = "Not enough stamina"
-// const searchedCollection = "AAA-should add"
-const searchedCollection = "Favorite ones"
+const searchedCollection = "AAA-should add"
+// const searchedCollection = "Favorite ones"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
 // console.log(foundCollection)
@@ -88,6 +88,9 @@ for (let i = 0; i < foldersToProcess.length; i++) {
         const fileName = fileSplit[fileSplit.length - 1];
         zip.file(fileName, fileStream);
     }
+    
+    // print folder name
+    // console.log(foldersToProcess[i]);
 
     // create an osz for every folder
     zip
