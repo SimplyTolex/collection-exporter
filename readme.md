@@ -7,7 +7,7 @@ Collection Exporter lets you export specific collections from osu!stable as .osz
 
 Shout-out to [osu-db-parser](https://github.com/KotRikD/osu-db-parser), without it this project wouldn't exist (or would take much more time)
 
-Also you should probably just use [Collection Manager](https://github.com/Piotrekol/CollectionManager), it's quite good.
+Also you should probably just use [Collection Manager](https://github.com/Piotrekol/CollectionManager), it's way more polished and kinda just better.
 
 ## Limitations
 
