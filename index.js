@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { OsuDBParser } from "osu-db-parser";
 import JSZip from "jszip";
+import trash from "trash";
 
 
 const osuFolderPath = "C:/Users/rogat/AppData/Local/osu!";
@@ -15,7 +16,8 @@ let osuCollectionData = collectionDB.getCollectionData()
 // const searchedCollection = "Triangles"
 // const searchedCollection = "Not enough stamina"
 // const searchedCollection = "AAA-add-this"
-const searchedCollection = "AAA-delete-this"
+// const searchedCollection = "AAA-delete-this"
+const searchedCollection = "zero-length"
 // const searchedCollection = "Favorite ones"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
@@ -70,18 +72,21 @@ const endElement = folderNames.length + 1; // slice doesn't include the last ele
 
 const foldersToProcess = folderNames.slice(startElement, endElement);
 
-// make output dir
-const outputDir = "./CEoutput"
 
-if (!fs.existsSync(outputDir)){
-    fs.mkdirSync(outputDir);
+function checkOutputDir(){
+    const outputDir = "./CEoutput";
+
+    if (!fs.existsSync(outputDir)){
+        fs.mkdirSync(outputDir);
+    }
+
+    return outputDir;
 }
 
-// finds every required file
-for (const beatmap of foldersToProcess) {
-    let zip = new JSZip();
 
-    for (const file of readAllFiles(osuFolderPath + "/Songs/" + beatmap)) {
+function zipBeatmap(beatmapFolderName, zip, outputDir){
+
+    for (const file of readAllFiles(osuFolderPath + "/Songs/" + beatmapFolderName)) {
 
         let fileStream = fs.createReadStream(file);
         
@@ -89,15 +94,37 @@ for (const beatmap of foldersToProcess) {
         const fileName = fileSplit[fileSplit.length - 1];
         zip.file(fileName, fileStream);
     }
-    
-    // print folder name
-    console.log(beatmap);
 
-    // create an osz for every folder
+     // // create an osz for every folder
     zip
         .generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-        .pipe(fs.createWriteStream(outputDir + "/" + foldersToProcess[i] + '.osz'))
+        .pipe(fs.createWriteStream(outputDir + "/" + beatmapFolderName + '.osz'))
         .on('finish', function () {
-            console.log(i + " exported [" + foldersToProcess[i] + "]");
+            console.log("Exported " + beatmapFolderName);
         });
+}
+
+const Action = Object.freeze({
+    ZIPPING: 0,
+    DELETING: 1
+});
+
+let neededAction
+
+// finds every required file
+for (const beatmap of foldersToProcess) {
+    switch(neededAction){
+        default:   // print folder name
+            console.log(beatmap);
+            break;
+
+        case Action.ZIPPING:
+            let zip = new JSZip();
+            zipBeatmap(beatmap, zip, checkOutputDir());
+            break;
+
+        case Action.DELETING:
+            console.log("Deleting beatmaps. Wait until the program finishes execution...")
+            await trash(osuFolderPath + "/Songs/" + beatmap);
+    }
 }
