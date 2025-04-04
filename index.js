@@ -14,7 +14,8 @@ let osuCollectionData = collectionDB.getCollectionData()
 // Todo give better error if collection doesn't exist
 // const searchedCollection = "Triangles"
 // const searchedCollection = "Not enough stamina"
-const searchedCollection = "AAA-should add"
+// const searchedCollection = "AAA-add-this"
+const searchedCollection = "AAA-delete-this"
 // const searchedCollection = "Favorite ones"
 
 const foundCollection = osuCollectionData["collection"].find(collection => collection.name === searchedCollection) // Finds required collection
@@ -77,20 +78,20 @@ if (!fs.existsSync(outputDir)){
 }
 
 // finds every required file
-for (let i = 0; i < foldersToProcess.length; i++) {
+for (const beatmap of foldersToProcess) {
     let zip = new JSZip();
 
-    for (const file of readAllFiles(osuFolderPath + "/Songs/" + foldersToProcess[i])) {
+    for (const file of readAllFiles(osuFolderPath + "/Songs/" + beatmap)) {
 
         let fileStream = fs.createReadStream(file);
-
+        
         const fileSplit = file.split("\\"); // potential bug with path separators on Linux?
         const fileName = fileSplit[fileSplit.length - 1];
         zip.file(fileName, fileStream);
     }
     
     // print folder name
-    // console.log(foldersToProcess[i]);
+    console.log(beatmap);
 
     // create an osz for every folder
     zip
